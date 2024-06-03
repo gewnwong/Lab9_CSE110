@@ -96,12 +96,145 @@
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
       output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      // Custom error alert triggers on pressing 'Calculate' button w/ empty fields
+      try {
+        if (operator === '/' && secondNum === '0') {
+          throw new divZero("Cannot divide by zero.");
+        }
+        output.innerHTMl = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch (err) {
+        console.log("Oh no! An error :(");
+        if (err instanceof divZero) {
+          alert("Invalid input: " + err.message);
+        } 
+        throw err;
+      }
+      finally {
+        console.log("Finished trying to compute output...");
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+
+    // Custom error creation
+    class divZero extends Error {
+      constructor(message){
+        super(message);
+        this.name = "divZero";
+      }
+    }
+
+    // Console Log button
+    errorBtns[0].addEventListener("click", () => {
+      console.log("Console Log");
+    });
+
+    // Console Error button
+    errorBtns[1].addEventListener("click", () => {
+      console.error("Console Error");
+    });
+
+    // Console Count button
+    let count = 0;
+    errorBtns[2].addEventListener("click", () => {
+      count++;
+      console.log(`Count Button: ${count}`);
+    });
+
+    // Console Warn button
+    errorBtns[3].addEventListener("click", () => {
+      console.warn("Console Warn Button");
+    });
+
+    // Console Assert button
+    errorBtns[4].addEventListener("click", () => {
+      let number = 2;
+      let errorMsg = 'The number does not equal 3';
+      console.assert(number === 3, { number, errorMsg });
+    });
+
+    // Console Clear button
+    errorBtns[5].addEventListener("click", () => {
+      count = 0;
+      console.clear();
+    });
+
+    // Console Dir button
+    errorBtns[6].addEventListener("click", () => {
+      console.dir(errorBtns[6]);
+    });
+
+    // Console dirxml button
+    errorBtns[7].addEventListener("click",  () => {
+      console.dirxml(errorBtns[7]);
+    });
+
+    // Console Group Start button
+    errorBtns[8].addEventListener("click", () => {
+      console.group();
+    });
+
+    // Console Group End button
+    errorBtns[9].addEventListener("click", () => {
+      console.groupEnd();
+    });
+
+    // Console Table button
+    errorBtns[10].addEventListener("click", () => {
+      function Class(name, number) {
+        this.name = name;
+        this.number = number;
+      }
+
+      const se = new Class("Software Engineering", "110");
+      const pl = new Class("Programming Languages", "130");
+      const ase = new Class("Advanced Software Engineering", "112");
+
+      console.table([se, pl, ase]);
+    });
+
+    // Start Timer buton
+    errorBtns[11].addEventListener("click", () => {
+      console.time("Timer Button");
+    });
+
+    // End Timer button
+    errorBtns[12].addEventListener("click", () => {
+      console.timeEnd("Timer Button");
+    });
+
+    // Console Trace button
+    errorBtns[13].addEventListener("click", function handleBtnClick() {
+      function deep() {
+        function deeper() {
+          function deepest() {
+             console.trace();
+          }
+          deepest();
+        }
+        deeper();
+      }
+      deep();
+    });
+
+    // Trigger a Global Error button
+    errorBtns[14].addEventListener("click", function handleBtnClick() {
+      try {
+        console.log(boom);
+      }
+      catch (err) {
+        window.addEventListener("error", function(event) {
+          console.log("An error...");
+        });
+        throw err;
+      }
+    });
+
   </script>
 </body>
 
